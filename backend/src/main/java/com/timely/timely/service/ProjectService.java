@@ -1,17 +1,14 @@
 package com.timely.timely.service;
 
 import com.timely.timely.model.Project;
-
-import java.util.Set;
+import org.springframework.data.domain.Page;
 
 public interface ProjectService {
     Project get(final Long id);
 
     Project getByName(String name);
 
-    Project getByIdAndName(Long id, String name);
-
-    Set<Project> getAll();
+    Page<Project> getAll(Integer pageSize, Integer pageNumber);
 
     void save(final Project project);
 

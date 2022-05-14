@@ -2,13 +2,12 @@ package com.timely.timely.facade;
 
 import com.timely.timely.dto.ProjectDto;
 import com.timely.timely.form.ProjectForm;
-
-import java.util.Set;
+import org.springframework.data.domain.Page;
 
 public interface ProjectFacade {
     ProjectDto get(Long id);
 
-    Set<ProjectDto> getAll();
+    Page<ProjectDto> getAll(Integer pageSize, Integer pageNumber);
 
     void create(ProjectForm projectForm);
 

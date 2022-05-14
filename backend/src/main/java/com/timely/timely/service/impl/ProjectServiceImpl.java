@@ -3,10 +3,9 @@ package com.timely.timely.service.impl;
 import com.timely.timely.model.Project;
 import com.timely.timely.repository.ProjectRepository;
 import com.timely.timely.service.ProjectService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -27,13 +26,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getByIdAndName(Long id, String name) {
-        return projectRepository.findByIdAndNameIgnoreCase(id, name).orElse(null);
-    }
-
-    @Override
-    public Set<Project> getAll() {
-        return new HashSet<>(projectRepository.findAll());
+    public Page<Project> getAll(Integer pageSize, Integer pageNumber) {
+        return projectRepository.findAll(PageRequest.of(pageNumber, pageSize));
+//        return new HashSet<>(projectRepository.findAll(PageRequest.of(pageNumber, pageSize)).getContent());
     }
 
     @Override

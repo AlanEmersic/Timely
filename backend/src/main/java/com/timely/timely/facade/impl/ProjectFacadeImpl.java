@@ -9,11 +9,12 @@ import com.timely.timely.mapper.ProjectFormMapper;
 import com.timely.timely.model.Project;
 import com.timely.timely.service.ProjectService;
 import com.timely.timely.validator.ProjectFormValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class ProjectFacadeImpl implements ProjectFacade {
@@ -38,8 +39,16 @@ public class ProjectFacadeImpl implements ProjectFacade {
     }
 
     @Override
-    public Set<ProjectDto> getAll() {
-        return projectService.getAll().stream().map(projectDtoMapper::map).collect(Collectors.toSet());
+    public Page<ProjectDto> getAll(Integer pageSize, Integer pageNumber) {
+        if (Objects.isNull(pageSize)) {
+            pageSize = 10;
+        }
+
+        if (Objects.isNull(pageNumber)) {
+            pageNumber = 0;
+        }
+
+        return new PageImpl<>(projectService.getAll(pageSize, pageNumber).stream().map(projectDtoMapper::map).toList());
     }
 
     @Override

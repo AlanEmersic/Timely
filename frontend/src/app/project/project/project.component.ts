@@ -13,16 +13,26 @@ import * as XLSX from 'xlsx';
 export class ProjectComponent implements OnInit {
   projects: Project[] = [];
   projectFilterText!: string;
+
   isTimerStarted: boolean = false;
   time: number = 0;
   timeDisplay!: string;
+
   workingProject!: Project;
   isNewProject: boolean = false;
   newProjectName!: string;
+
   closeResult = '';
+
+  currentPage: number = 0;
+  previousPage!: number;
+  nextPage!: number;
+  totalPages: number[] = [];
+
   private projectStartDate!: string;
   private projectEndDate!: string;
   private interval!: any;
+  private pageSize: number = 10;
 
   constructor(
     private projectService: ProjectService,
@@ -39,10 +49,18 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-  getProjects() {
-    this.projectService.getProjects().subscribe((projects) => {
-      this.projects = projects.sort((a, b) => a.id - b.id);
-    });
+  getProjects(pageNumber: number = this.currentPage) {
+    this.projectService
+      .getProjects(pageNumber, this.pageSize)
+      .subscribe((data) => {
+        this.totalPages = Array(data.totalPages + 1);
+
+        this.currentPage = pageNumber;
+        this.previousPage = pageNumber == 0 ? -1 : pageNumber - 1;
+        this.nextPage = data.totalPages == pageNumber ? -1 : pageNumber + 1;
+
+        this.projects = data.content.sort((a: any, b: any) => a.id - b.id);
+      });
   }
 
   addProject() {

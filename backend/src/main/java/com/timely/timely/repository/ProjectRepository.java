@@ -9,6 +9,4 @@ import java.util.Optional;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findByNameIgnoreCase(String name);
-
-    Optional<Project> findByIdAndNameIgnoreCase(Long id, String name);
 }

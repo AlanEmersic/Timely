@@ -3,11 +3,11 @@ package com.timely.timely.controller;
 import com.timely.timely.dto.ProjectDto;
 import com.timely.timely.facade.ProjectFacade;
 import com.timely.timely.form.ProjectForm;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -24,8 +24,8 @@ public class ProjectController {
     }
 
     @GetMapping
-    public Set<ProjectDto> getAllProjects() {
-        return projectFacade.getAll();
+    public Page<ProjectDto> getAllProjects(@RequestParam(required = false) Integer pageSize, @RequestParam(required = false) Integer pageNumber) {
+        return projectFacade.getAll(pageSize, pageNumber);
     }
 
     @PostMapping

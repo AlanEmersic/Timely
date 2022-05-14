@@ -16,10 +16,11 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
-  getProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(this.apiUrl).pipe(
+  getProjects(pageNumber: number, pageSize: number): Observable<any> {
+    const url = `${this.apiUrl}?pageNumber=${pageNumber}&?pageSize=${pageSize}`;
+    return this.http.get<any>(url).pipe(
       tap(() => console.log('fetched projects')),
-      catchError(this.handleError<Project[]>('getProjects', []))
+      catchError(this.handleError<any>('getProjects', []))
     );
   }
 
