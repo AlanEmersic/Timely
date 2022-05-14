@@ -1,1 +1,139 @@
-<p>project works!</p>
+<div class="container">
+  <div class="row"><h2 class="pl-3">Timely</h2></div>
+
+  <button
+    type="button"
+    class="btn btn-primary"
+    *ngIf="!isTimerStarted"
+    (click)="startTimer(null)"
+  >
+    Start
+  </button>
+  <div *ngIf="isTimerStarted" class="my-3 row">
+    <h4 class="col-md-3" *ngIf="!isNewProject">
+      Working on: <b>{{ workingProject.name }}</b>
+    </h4>
+    <h4 class="col-md-3" *ngIf="isNewProject">Working on new project</h4>
+
+    <h4 class="col-md-3">{{ timeDisplay }}</h4>
+    <button
+      type="button"
+      class="btn btn-danger col-md-1"
+      *ngIf="!isNewProject"
+      (click)="stopTimer()"
+    >
+      Stop
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger col-md-1"
+      *ngIf="isNewProject"
+      (click)="open(content)"
+    >
+      Stop
+    </button>
+
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">New project</h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="name">Project name</label>
+            <div class="input-group">
+              <input
+                type="text"
+                id="name"
+                name="newProjectName"
+                class="form-control"
+                placeholder="project name"
+                [(ngModel)]="newProjectName"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="addProject(); modal.close('Save click')"
+          [disabled]="!newProjectName"
+        >
+          Stop timer
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="input-group my-md-3" style="width: 20rem">
+    <input
+      type="text"
+      class="form-control"
+      id="search-project-name"      
+      [(ngModel)]="projectFilterText"
+      placeholder="Search projects"
+      autofocus
+    />
+
+    <button class="btn btn-primary" id="search" disabled>
+      <i class="fa fa-search"></i>
+    </button>    
+  </div>
+
+  <table class="table table-striped table-dark mt-3" id="projects">
+    <thead>
+      <tr class="text-center">
+        <th scope="col">Name</th>
+        <th scope="col">Start (h:m:s)</th>
+        <th scope="col">Stop (h:m:s)</th>
+        <th scope="col">Duration (h:m:s)</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let project of projects | project: projectFilterText"
+        class="text-center"
+      >
+        <td>{{ project?.name }}</td>
+        <td>{{ project?.startTime | date: "dd.MM.yyyy. HH:mm:ss" }}</td>
+        <td>{{ project?.endTime | date: "dd.MM.yyyy. HH:mm:ss" }}</td>
+        <td>{{ project?.duration }}</td>
+        <td>
+          <button
+            class="btn btn-info mx-2"
+            (click)="startTimer(project)"
+            [disabled]="isTimerStarted"
+          >
+            Continue work
+          </button>
+          <button
+            class="btn btn-danger mx-2"
+            (click)="deleteProject(project)"
+            [disabled]="isTimerStarted"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <button
+      class="btn btn-success"
+      (click)="exportExcel()"
+      [disabled]="projects.length == 0"
+    >
+      Export to Excel
+    </button>
+  </div>
+</div>

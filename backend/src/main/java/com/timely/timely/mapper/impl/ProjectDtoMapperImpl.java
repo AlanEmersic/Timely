@@ -15,6 +15,8 @@ public class ProjectDtoMapperImpl implements ProjectDtoMapper {
         if (Objects.isNull(project))
             return null;
 
-        return new ProjectDto(project.getId(), project.getName(), project.getStartTime(), project.getEndTime(), project.getDuration());
+        long durationInSeconds = project.getDuration().getSeconds();
+        String duration = String.format("%d:%02d:%02d", durationInSeconds / 3600, (durationInSeconds % 3600) / 60, (durationInSeconds % 60));
+        return new ProjectDto(project.getId(), project.getName(), project.getStartTime(), project.getEndTime(), duration);
     }
 }

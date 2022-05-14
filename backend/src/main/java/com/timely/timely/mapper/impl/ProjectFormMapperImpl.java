@@ -40,9 +40,8 @@ public class ProjectFormMapperImpl implements ProjectFormMapper {
         LocalDateTime endTime = LocalDateTime.parse(form.getEndTime(), dateTimeFormatter);
 
         project.setName(form.getName());
-        project.setStartTime(startTime);
         project.setEndTime(endTime);
-        project.setDuration(Duration.between(startTime, endTime));
+        project.setDuration(project.getDuration().plus(Duration.between(startTime, endTime)));
 
         return project;
     }

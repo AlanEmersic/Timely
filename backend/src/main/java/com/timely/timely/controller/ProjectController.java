@@ -11,7 +11,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/projects")
-@CrossOrigin(origins = {"http://localhost:4200"})
 public class ProjectController {
     private final ProjectFacade projectFacade;
 
@@ -41,7 +40,7 @@ public class ProjectController {
         projectFacade.delete(id);
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}/update")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateProject(@PathVariable final Long id, @Valid @RequestBody final ProjectForm projectForm) {
         projectFacade.update(id, projectForm);
