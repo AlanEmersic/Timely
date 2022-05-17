@@ -28,7 +28,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Page<Project> getAll(Integer pageSize, Integer pageNumber) {
         return projectRepository.findAll(PageRequest.of(pageNumber, pageSize));
-//        return new HashSet<>(projectRepository.findAll(PageRequest.of(pageNumber, pageSize)).getContent());
     }
 
     @Override
